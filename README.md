@@ -12,16 +12,15 @@ SQL дамп базы в корне сайта(test.).
 Вид views/test/index.php
 
 Собственно вот основной PHP код:
+
 public function actionIndex()
   {
     set_time_limit(0);
     $this->enableCsrfValidation = false;
     $model = new DataForm();
-//    var_dump($model);
     if ($model->load(Yii::$app->request->post())) {
       $response = Yii::$app->response;
       $response->format = \yii\web\Response::FORMAT_JSON;
-
       $auth = Auth::findOne(['id' => 1]); // там в таблице одна запись где храниться хеш ключа (валидный ключ 1234)
       // сравним введенный ключ с хэшем в таблице auth
       if (!Yii::$app->security->validatePassword($model->key, $auth->hash)) {
