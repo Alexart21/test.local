@@ -21,4 +21,12 @@ class DataForm extends Model
     ];
   }
 
+  public function attributeLabels()
+  {
+    return [
+      'key' => 'Ключ авторизации',
+      'data' => 'Файл с JSON данными',
+    ];
+  }
+
 }
