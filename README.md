@@ -1,5 +1,5 @@
 В БД создал 2 таблицы auth и products. Поскольку в задании не было про миграции то миграции не писал.
-SQL дамп базы в корне сайта(test.sql).
+SQL дамп базы в корне сайта(test.).
 
 В таблице auth храниться только хеш ключа от строки '1234'
 
@@ -21,6 +21,7 @@ public function actionIndex()
     if ($model->load(Yii::$app->request->post())) {
       $response = Yii::$app->response;
       $response->format = \yii\web\Response::FORMAT_JSON;
+
       $auth = Auth::findOne(['id' => 1]); // там в таблице одна запись где храниться хеш ключа (валидный ключ 1234)
       // сравним введенный ключ с хэшем в таблице auth
       if (!Yii::$app->security->validatePassword($model->key, $auth->hash)) {
@@ -40,11 +41,13 @@ public function actionIndex()
           $all = count($data); // всего товаров обнаружено в JSON
           $upd = 0; // обновлено
           $ins = 0; // добавлено
+
           // обернем в транзакцию
           $transaction = Products::getDb()->beginTransaction();
           try {
             foreach ($data as $product) {
               $is_product = Products::findOne(['product_id' => $product->product_id]);
+
               if ($is_product) { // товар с таким product_id уже есть - меняем ценник
                 $is_product->prices = json_encode($product->prices);
                 $res = $is_product->save();
@@ -73,6 +76,7 @@ public function actionIndex()
         }
       }
     }
+
     return $this->render('index', compact('model'));
   }
 
