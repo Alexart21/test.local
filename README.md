@@ -29,7 +29,6 @@ public function actionIndex()
         return json_encode($response->data);
       }
       if ($_FILES) {
-//          var_dump($_FILES['DataForm']["tmp_name"]['data']);
         $data = file_get_contents($_FILES['DataForm']["tmp_name"]['data']);
         try {
           $data = json_decode($data);
