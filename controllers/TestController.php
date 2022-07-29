@@ -34,13 +34,18 @@ class TestController extends Controller
       }
       if ($data) {
         try {
-          $data = json_decode($data);
+          $data = json_decode($data); // здесь может быть null или false при невалидном json
+          if(!$data){
+            $response->data = ['isOk' => false, 'err' => 'Что-то не так с JSON данными!'];
+            return json_encode($response->data);
+          }
 //          var_dump($data);
 //          die;
         } catch (Exception $e) {
-          $response->data = ['isOk' => false, 'err' => 'Некорректные JSON данные!'];
+          $response->data = ['isOk' => false, 'err' => 'Ошибка при обработке JSON данных!'];
           return json_encode($response->data);
         }
+
         $all = count($data); // всего товаров обнаружено в JSON
         $upd = 0; // кол-во обновленных полей
         $ins = 0; // кол-во добавленных полей
